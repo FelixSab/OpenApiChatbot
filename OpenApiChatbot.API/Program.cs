@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using OpenApiChatbot.API;
+using OpenApiChatbot.API.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddChatbotClient();
+builder.Services.ConfigureModelValidation();
 
 // Add Swagger for testing
 builder.Services.AddSwaggerGen();
