@@ -1,0 +1,29 @@
+# Build outputs
+bin/
+obj/
+
+# Visual Studio/JetBrains/VSCode
+.vs/
+.idea/
+.vscode/
+
+# User-specific files
+*.user
+*.suo
+*.userprefs
+*.csproj.user
+
+# Logs and temporary files
+*.log
+*.tmp
+*.lock
+*.cache
+Thumbs.db
+.DS_Store
+
+# App settings and secrets
+appsettings.*.local.json
+**/secrets.json
+
+# HTTP test files (optional)
+*.http
