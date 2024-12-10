@@ -71,6 +71,6 @@ public static class ChatbotClientExtensions
 {
     public static IServiceCollection AddChatbotClient(this IServiceCollection services)
     {
-        return services.AddSingleton<IChatbotClient, MockChatbotClient>();
+        return services.AddTransient<IChatbotClient, MockChatbotClient>();
     }
 }

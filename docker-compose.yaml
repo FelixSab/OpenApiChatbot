@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  api:
+    image: openapichatbot:latest
+    build:
+      context: .
+      dockerfile: OpenApiChatbot.API/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+    # Enable container restart on failure
+    restart: unless-stopped
+    # Healthcheck to monitor the service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    # Configure logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

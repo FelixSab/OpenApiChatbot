@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using OpenApiChatbot.API;
 using OpenApiChatbot.API.Utils;
@@ -10,6 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddChatbotClient();
 builder.Services.ConfigureModelValidation();
+builder.Services.AddHealthChecks();
+
+builder.Services.AddHttpLogging(o => { });
 
 // Add Swagger for testing
 builder.Services.AddSwaggerGen();
@@ -19,9 +23,6 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Set up a global exception handler for unhandled exceptions, that points to the "/error" endpoint.
-app.UseExceptionHandler("/error");
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -30,6 +31,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Set up a global exception handler for unhandled exceptions, that points to the "/error" endpoint.
+app.UseExceptionHandler("/error");
 app.Map("/error", (HttpContext httpContext) =>
 {
     var problemDetails = new ProblemDetails
@@ -38,8 +41,13 @@ app.Map("/error", (HttpContext httpContext) =>
         Title = "An unexpected error occurred!",
         Detail = "Please try again later or contact support if the problem persists."
     };
+
     return Results.Problem(problemDetails);
 });
+
+app.UseHttpLogging();
+
+app.MapHealthChecks("/health");
 
 app.UseHttpsRedirection();
 
